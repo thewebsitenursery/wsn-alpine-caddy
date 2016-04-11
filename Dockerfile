@@ -1,4 +1,4 @@
-FROM wodby/php-actions-alpine:dev
+FROM wodby/php-actions-alpine:edge
 MAINTAINER Wodby <hello@wodby.com>
 
 RUN export TWIG_VER="1.24.0" && \
@@ -34,40 +34,43 @@ RUN export TWIG_VER="1.24.0" && \
         imagemagick \
         && \
 
+    apk add --update \
+
     # Install PHP extensions
     apk add --update \
-        php \
-        php-cli \
-        php-fpm \
-        php-opcache \
-        php-xml \
-        php-ctype \
-        php-ftp \
-        php-gd \
-        php-json \
-        php-posix \
-        php-curl \
-        php-dom \
-        php-pdo \
-        php-pdo_mysql \
-        php-sockets \
-        php-zlib \
-        php-mcrypt \
-        php-mysqli \
-        php-bz2 \
-        php-pear \
-        php-phar \
-        php-openssl \
-        php-posix \
-        php-redis@testing \
-        php-zip \
-        php-calendar \
-        php-iconv \
-        php-imap \
-        php-memcache \
-        php-xdebug@testing \
-        php-imagick@testing \
+        php7@testing \
+        php7-fpm@testing \
+        php7-opcache@testing \
+        php7-xml@testing \
+        php7-ctype@testing \
+        php7-ftp@testing \
+        php7-gd@testing \
+        php7-json@testing \
+        php7-posix@testing \
+        php7-curl@testing \
+        php7-dom@testing \
+        php7-pdo@testing \
+        php7-pdo_mysql@testing \
+        php7-sockets@testing \
+        php7-zlib@testing \
+        php7-mcrypt@testing \
+        php7-mysqli@testing \
+        php7-bz2@testing \
+        php7-pear@testing \
+        php7-phar@testing \
+        php7-openssl@testing \
+        php7-posix@testing \
+        php7-zip@testing \
+        php7-calendar@testing \
+        php7-iconv@testing \
+        php7-imap@testing \
         && \
+
+    # Create symlinks PHP -> PHP7
+    ln -sf /etc/php7 /etc/php && \
+    ln -sf /var/log/php7 /var/log/php && \
+    ln -sf /usr/lib/php7 /usr/lib/php && \
+    ln -sf /usr/bin/php7 /usr/bin/php && \
 
     # Configure php.ini
     sed -i "s/^expose_php.*/expose_php = Off/" /etc/php/php.ini && \
@@ -80,7 +83,6 @@ RUN export TWIG_VER="1.24.0" && \
     echo "error_log = \"/var/log/php/error.log\"" | tee -a /etc/php/php.ini && \
 
     # Configure php log dir
-    mkdir /var/log/php && \
     touch /var/log/php/error.log && \
     touch /var/log/php/fpm-error.log && \
     touch /var/log/php/fpm-slow.log && \
@@ -105,7 +107,7 @@ RUN export TWIG_VER="1.24.0" && \
     cd / && rm -rf /usr/include/php /usr/lib/php/build /usr/lib/php/20090626/*.a && \
 
     # Remove redis binaries and config
-    rm -f /usr/bin/redis-* && /etc/redis.conf && \
+    rm -f /usr/bin/redis-* /etc/redis.conf && \
 
     # Replace sendmail by msmtp
     ln -sf /usr/bin/msmtp /usr/sbin/sendmail && \
