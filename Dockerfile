@@ -1,4 +1,4 @@
-FROM wodby/php-actions-alpine:edge
+FROM wodby/nginx-alpine:edge
 MAINTAINER Wodby <hello@wodby.com>
 
 RUN export TWIG_VER="1.24.0" && \
