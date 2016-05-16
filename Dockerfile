@@ -111,7 +111,7 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
 
     # Install xdebug extension
     wget -qO- wget http://xdebug.org/files/xdebug-{XDEBUG_VER}.tgz | tar xz -C /tmp/ && \
-    cd /tmp/xdebug-${UPLOADPROGRESS_VER} && \
+    cd /tmp/xdebug-${XDEBUG_VER} && \
     phpize && ./configure && make && make install && \
 
     # Purge dev APK packages
