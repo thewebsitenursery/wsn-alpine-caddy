@@ -3,6 +3,7 @@ MAINTAINER Wodby <hello@wodby.com>
 
 RUN export PHP_ACTIONS_VER="v1.0.18" && \
     export UPLOADPROGRESS_VER="0.1.0" && \
+    export XDEBUG_VER="2.4.0" && \
     export WALTER_VER="1.3.0" && \
 
     echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
@@ -61,7 +62,6 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
         php7-mcrypt@testing \
         php7-mysqli@testing \
         php7-bz2@testing \
-        php7-pear@testing \
         php7-phar@testing \
         php7-openssl@testing \
         php7-posix@testing \
@@ -82,6 +82,9 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
     ln -sf /usr/bin/php7 /usr/bin/php && \
     ln -sf /usr/bin/phpize7 /usr/bin/phpize && \
     ln -sf /usr/bin/php-config7 /usr/bin/php-config && \
+
+    # Create symlink PHP-FPM
+    ln -sf /usr/sbin/php-fmp7 /usr/bin/php-fpm && \
 
     # Configure php.ini
     sed -i "s/^expose_php.*/expose_php = Off/" /etc/php/php.ini && \
@@ -105,6 +108,11 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
     cd /tmp/uploadprogress-${UPLOADPROGRESS_VER} && \
     phpize && ./configure && make && make install && \
     echo 'extension=uploadprogress.so' > /etc/php/conf.d/uploadprogress.ini && \
+
+    # Install xdebug extension
+    wget -qO- wget http://xdebug.org/files/xdebug-{XDEBUG_VER}.tgz | tar xz -C /tmp/ && \
+    cd /tmp/xdebug-${UPLOADPROGRESS_VER} && \
+    phpize && ./configure && make && make install && \
 
     # Purge dev APK packages
     apk del --purge *-dev build-base autoconf libtool && \
