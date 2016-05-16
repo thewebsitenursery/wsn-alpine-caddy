@@ -1,7 +1,8 @@
 FROM wodby/nginx-alpine:edge
 MAINTAINER Wodby <hello@wodby.com>
 
-RUN export UPLOADPROGRESS_VER="0.1.0" && \
+RUN export PHP_ACTIONS_VER="v1.0.18" && \
+    export UPLOADPROGRESS_VER="0.1.0" && \
     export WALTER_VER="1.3.0" && \
 
     echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
@@ -24,6 +25,13 @@ RUN export UPLOADPROGRESS_VER="0.1.0" && \
         diffutils \
         msmtp \
         && \
+
+    # Add PHP actions
+    cd /tmp && \
+    git clone https://github.com/Wodby/php-actions-alpine.git && \
+    cd php-actions-alpine && \
+    git checkout $PHP_ACTIONS_VER && \
+    rsync -av rootfs/ / && \
 
     # Install PHP specific packages
     apk add --update \
