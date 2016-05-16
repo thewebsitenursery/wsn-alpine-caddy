@@ -124,7 +124,7 @@ RUN export UPLOADPROGRESS_VER="0.1.0" && \
     ln -sf /usr/local/src/wp-cli/bin/wp /usr/bin/wp && \
 
     # Install Walter tool
-    wget -qO- https://s3.amazonaws.com/wodby-releases/walter-cd/v${WALTER_VER}/walter-cd.tar.gz | tar xz -C /tmp/ && \
+    wget -qO- https://s3.amazonaws.com/wodby-releases/walter-cd/v${WALTER_VER}/walter.tar.gz | tar xz -C /tmp/ && \
     mkdir -p /opt/wodby/bin && \
     cp /tmp/walter_linux_amd64/walter /opt/wodby/bin && \
 
