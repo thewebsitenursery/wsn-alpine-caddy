@@ -91,7 +91,7 @@ RUN export UPLOADPROGRESS_VER="0.1.0" && \
     chown -R wodby:wodby /var/log/php && \
 
     # Install uploadprogess extension
-    apk add --update build-base php-dev php-pear autoconf libtool pcre-dev && \
+    apk add --update build-base autoconf libtool pcre-dev && \
     wget -qO- https://s3.amazonaws.com/wodby-releases/uploadprogress/v${UPLOADPROGRESS_VER}/php7-uploadprogress.tar.gz | tar xz -C /tmp/ && \
     cd /tmp/uploadprogress-${UPLOADPROGRESS_VER} && \
     phpize && ./configure && make && make install && \
