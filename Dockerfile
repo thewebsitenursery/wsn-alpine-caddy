@@ -64,6 +64,7 @@ RUN export UPLOADPROGRESS_VER="0.1.0" && \
         php7-soap@testing \
         php7-dev@testing \
         php7-pear@testing \
+        php7-redis@testing \
         && \
 
     # Create symlinks PHP -> PHP7
