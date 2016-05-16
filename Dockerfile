@@ -72,7 +72,7 @@ RUN export UPLOADPROGRESS_VER="0.1.0" && \
     ln -sf /usr/lib/php7 /usr/lib/php && \
     ln -sf /usr/bin/php7 /usr/bin/php && \
     ln -sf /usr/bin/phpize7 /usr/bin/phpize && \
-    ln -sf /usr/bin/php-config7 /usr/bin/php-config
+    ln -sf /usr/bin/php-config7 /usr/bin/php-config && \
 
     # Configure php.ini
     sed -i "s/^expose_php.*/expose_php = Off/" /etc/php/php.ini && \
