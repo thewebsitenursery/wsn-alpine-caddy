@@ -81,6 +81,7 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
     ln -sf /usr/lib/php7 /usr/lib/php && \
     ln -sf /usr/bin/php7 /usr/bin/php && \
     ln -sf /usr/bin/phpize7 /usr/bin/phpize && \
+    ln -sf /usr/bin/php-config7 /usr/bin/php-config && \
 
     # Create symlink PHP-FPM
     ln -sf /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
