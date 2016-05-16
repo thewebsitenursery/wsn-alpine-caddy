@@ -1,10 +1,8 @@
 FROM wodby/nginx-alpine:edge
 MAINTAINER Wodby <hello@wodby.com>
 
-RUN export TWIG_VER="1.24.0" && \
+RUN export UPLOADPROGRESS_VER="0.1.0" && \
     export WALTER_VER="1.3.0" && \
-
-    echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
 
     # Install common packages
     apk add --update \
@@ -23,7 +21,6 @@ RUN export TWIG_VER="1.24.0" && \
         patchutils \
         diffutils \
         msmtp \
-        inotify-tools \
         && \
 
     # Install PHP specific packages
@@ -34,36 +31,37 @@ RUN export TWIG_VER="1.24.0" && \
         imagemagick \
         && \
 
-    apk add --update \
-
     # Install PHP extensions
     apk add --update \
-        php7@testing \
-        php7-fpm@testing \
-        php7-opcache@testing \
-        php7-xml@testing \
-        php7-ctype@testing \
-        php7-ftp@testing \
-        php7-gd@testing \
-        php7-json@testing \
-        php7-posix@testing \
-        php7-curl@testing \
-        php7-dom@testing \
-        php7-pdo@testing \
-        php7-pdo_mysql@testing \
-        php7-sockets@testing \
-        php7-zlib@testing \
-        php7-mcrypt@testing \
-        php7-mysqli@testing \
-        php7-bz2@testing \
-        php7-pear@testing \
-        php7-phar@testing \
-        php7-openssl@testing \
-        php7-posix@testing \
-        php7-zip@testing \
-        php7-calendar@testing \
-        php7-iconv@testing \
-        php7-imap@testing \
+        php7 \
+        php7-fpm \
+        php7-opcache \
+        php7-xml \
+        php7-ctype \
+        php7-ftp \
+        php7-gd \
+        php7-json \
+        php7-posix \
+        php7-curl \
+        php7-dom \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-sockets \
+        php7-zlib \
+        php7-mcrypt \
+        php7-mysqli \
+        php7-bz2 \
+        php7-pear \
+        php7-phar \
+        php7-openssl \
+        php7-posix \
+        php7-zip \
+        php7-calendar \
+        php7-iconv \
+        php7-imap \
+        php7-soap \
+        php7-dev \
+        php7-pear \
         && \
 
     # Create symlinks PHP -> PHP7
@@ -71,6 +69,8 @@ RUN export TWIG_VER="1.24.0" && \
     ln -sf /var/log/php7 /var/log/php && \
     ln -sf /usr/lib/php7 /usr/lib/php && \
     ln -sf /usr/bin/php7 /usr/bin/php && \
+    ln -sf /usr/bin/phpize7 /usr/bin/phpize && \
+    ln -sf /usr/bin/php-config7 /usr/bin/php-config
 
     # Configure php.ini
     sed -i "s/^expose_php.*/expose_php = Off/" /etc/php/php.ini && \
@@ -88,16 +88,11 @@ RUN export TWIG_VER="1.24.0" && \
     touch /var/log/php/fpm-slow.log && \
     chown -R wodby:wodby /var/log/php && \
 
-    # Install Twig template engine
+    # Install uploadprogess extension
     apk add --update build-base php-dev php-pear autoconf libtool pcre-dev && \
-    wget -qO- https://github.com/twigphp/Twig/archive/v${TWIG_VER}.tar.gz | tar xz -C /tmp/ && \
-    cd /tmp/Twig-${TWIG_VER}/ext/twig && \
+    wget -qO- https://s3.amazonaws.com/wodby-releases/uploadprogress/v${UPLOADPROGRESS_VER}/php7-uploadprogress.tar.gz | tar xz -C /tmp/ && \
+    cd /tmp/uploadprogress-${UPLOADPROGRESS_VER} && \
     phpize && ./configure && make && make install && \
-    echo 'extension=twig.so' > /etc/php/conf.d/twig.ini && \
-
-    # Install PHP extensions through Pecl
-    sed -ie 's/-n//g' `which pecl` && \
-    pecl install uploadprogress && \
     echo 'extension=uploadprogress.so' > /etc/php/conf.d/uploadprogress.ini && \
 
     # Purge dev APK packages
@@ -127,8 +122,8 @@ RUN export TWIG_VER="1.24.0" && \
     ln -sf /usr/local/src/wp-cli/bin/wp /usr/bin/wp && \
 
     # Install Walter tool
-    wget -qO- https://github.com/walter-cd/walter/releases/download/v${WALTER_VER}/walter_${WALTER_VER}_linux_amd64.tar.gz | tar xz -C /tmp/ && \
-    mkdir /opt/wodby/bin && \
+    wget -qO- https://s3.amazonaws.com/wodby-releases/walter-cd/v${WALTER_VER}/walter-cd.tar.gz | tar xz -C /tmp/ && \
+    mkdir -p /opt/wodby/bin && \
     cp /tmp/walter_linux_amd64/walter /opt/wodby/bin && \
 
     # Fix permissions
