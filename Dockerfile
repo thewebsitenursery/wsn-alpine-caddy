@@ -74,6 +74,7 @@ RUN export PHP_ACTIONS_VER="master" && \
         php7-pear@testing \
         php7-redis@testing \
         php7-mbstring@testing \
+        php7-xdebug@testing \
         && \
 
     # Create symlinks PHP -> PHP7
@@ -109,11 +110,6 @@ RUN export PHP_ACTIONS_VER="master" && \
     cd /tmp/uploadprogress-${UPLOADPROGRESS_VER} && \
     phpize && ./configure && make && make install && \
     echo 'extension=uploadprogress.so' > /etc/php/conf.d/uploadprogress.ini && \
-
-    # Install xdebug extension
-    wget -qO- http://xdebug.org/files/xdebug-${XDEBUG_VER}.tgz | tar xz -C /tmp/ && \
-    cd /tmp/xdebug-${XDEBUG_VER} && \
-    phpize && ./configure && make && make install && \
 
     # Purge dev APK packages
     apk del --purge *-dev build-base autoconf libtool && \
