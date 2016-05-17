@@ -73,6 +73,7 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
         php7-dev@testing \
         php7-pear@testing \
         php7-redis@testing \
+        php7-mbstring@testing \
         && \
 
     # Create symlinks PHP -> PHP7
@@ -131,12 +132,16 @@ RUN export PHP_ACTIONS_VER="v1.0.18" && \
     git config --global user.email "admin@wodby.com" && \
     git config --global push.default current && \
 
-    # Install composer, drush and wp-cli
+    # Install composer
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+
+    # Install drush
     git clone https://github.com/drush-ops/drush.git /usr/local/src/drush && \
     cd /usr/local/src/drush && \
     ln -sf /usr/local/src/drush/drush /usr/bin/drush && \
     composer install && rm -rf ./.git && \
+
+    # Install wp-cli
     composer create-project wp-cli/wp-cli /usr/local/src/wp-cli --no-dev && \
     ln -sf /usr/local/src/wp-cli/bin/wp /usr/bin/wp && \
 
