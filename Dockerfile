@@ -24,7 +24,7 @@ RUN export PHP_ACTIONS_VER="v1.1.1" && \
         patch \
         patchutils \
         diffutils \
-        msmtp \
+        postfix \
         && \
 
     # Add PHP actions
@@ -119,9 +119,6 @@ RUN export PHP_ACTIONS_VER="v1.1.1" && \
 
     # Remove redis binaries and config
     rm -f /usr/bin/redis-* /etc/redis.conf && \
-
-    # Replace sendmail by msmtp
-    ln -sf /usr/bin/msmtp /usr/sbin/sendmail && \
 
     # Define Git global config
     git config --global user.name "Administrator" && \
