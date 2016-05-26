@@ -33,7 +33,7 @@ RUN export PHP_ACTIONS_VER="master" && \
     git clone https://github.com/Wodby/php-actions-alpine.git && \
     cd php-actions-alpine && \
     git checkout $PHP_ACTIONS_VER && \
-    rsync -av rootfs/ / && \
+    rsync -avp rootfs/ / && \
 
     # Install PHP specific packages
     apk add --update \
