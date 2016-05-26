@@ -5,6 +5,7 @@ RUN export PHP_ACTIONS_VER="v1.1.1" && \
     export UPLOADPROGRESS_VER="0.1.0" && \
     export XDEBUG_VER="2.4.0" && \
     export WALTER_VER="1.3.0" && \
+    export GO_AWS_S3_VER="v1.0.0" && \
 
     echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
 
@@ -145,6 +146,10 @@ RUN export PHP_ACTIONS_VER="v1.1.1" && \
     wget -qO- https://s3.amazonaws.com/wodby-releases/walter-cd/v${WALTER_VER}/walter.tar.gz | tar xz -C /tmp/ && \
     mkdir -p /opt/wodby/bin && \
     cp /tmp/walter_linux_amd64/walter /opt/wodby/bin && \
+
+    # Install go-aws-s3
+    wget -qO- https://s3.amazonaws.com/wodby-releases/go-aws-s3/${GO_AWS_S3_VER}/go-aws-s3.tar.gz | tar xz -C /tmp/ && \
+    cp /tmp/go-aws-s3 /opt/wodby/bin && \
 
     # Fix permissions
     chmod 755 /root && \
