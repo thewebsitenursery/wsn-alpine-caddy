@@ -76,6 +76,7 @@ RUN export PHP_ACTIONS_VER="master" && \
         php7-redis@testing \
         php7-mbstring@testing \
         php7-xdebug@testing \
+        php7-exif@testing \
         && \
 
     # Create symlinks PHP -> PHP7
