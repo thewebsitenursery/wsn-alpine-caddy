@@ -25,7 +25,7 @@ RUN export PHP_ACTIONS_VER="master" && \
         patch \
         patchutils \
         diffutils \
-        msmtp \
+        postfix \
         && \
 
     # Add PHP actions
@@ -76,6 +76,7 @@ RUN export PHP_ACTIONS_VER="master" && \
         php7-redis@testing \
         php7-mbstring@testing \
         php7-xdebug@testing \
+        php7-exif@testing \
         && \
 
     # Create symlinks PHP -> PHP7
@@ -120,9 +121,6 @@ RUN export PHP_ACTIONS_VER="master" && \
 
     # Remove redis binaries and config
     rm -f /usr/bin/redis-* /etc/redis.conf && \
-
-    # Replace sendmail by msmtp
-    ln -sf /usr/bin/msmtp /usr/sbin/sendmail && \
 
     # Define Git global config
     git config --global user.name "Administrator" && \
