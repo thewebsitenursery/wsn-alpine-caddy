@@ -10,7 +10,7 @@ RUN export PHP_ACTIONS_VER="master" && \
     echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
 
     # Install common packages
-    apk add --update \
+    apk add --no-cache \
         git \
         nano \
         grep \
@@ -44,7 +44,7 @@ RUN export PHP_ACTIONS_VER="master" && \
         && \
 
     # Install PHP extensions
-    apk add --update \
+    apk add --no-cache \
         php7@testing \
         php7-fpm@testing \
         php7-opcache@testing \
@@ -81,26 +81,23 @@ RUN export PHP_ACTIONS_VER="master" && \
 
     # Create symlinks PHP -> PHP7
     ln -sf /etc/php7 /etc/php && \
-    ln -sf /var/log/php7 /var/log/php && \
-    ln -sf /usr/lib/php7 /usr/lib/php && \
     ln -sf /usr/bin/php7 /usr/bin/php && \
-    ln -sf /usr/bin/phpize7 /usr/bin/phpize && \
-    ln -sf /usr/bin/php-config7 /usr/bin/php-config && \
-
-    # Create symlink PHP-FPM
-    ln -sf /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
 
     # Configure php.ini
-    sed -i "s/^expose_php.*/expose_php = Off/" /etc/php/php.ini && \
-    sed -i "s/^;date.timezone.*/date.timezone = UTC/" /etc/php/php.ini && \
-    sed -i "s/^memory_limit.*/memory_limit = -1/" /etc/php/php.ini && \
-    sed -i "s/^max_execution_time.*/max_execution_time = 300/" /etc/php/php.ini && \
-    sed -i "s/^post_max_size.*/post_max_size = 512M/" /etc/php/php.ini && \
-    sed -i "s/^upload_max_filesize.*/upload_max_filesize = 512M/" /etc/php/php.ini && \
-    echo "extension_dir = \"/usr/lib/php/modules\"" | tee -a /etc/php/php.ini && \
-    echo "error_log = \"/var/log/php/error.log\"" | tee -a /etc/php/php.ini && \
+    sed -i \
+        -e "s/^expose_php.*/expose_php = Off/" \
+        -e "s/^;date.timezone.*/date.timezone = UTC/" \
+        -e "s/^memory_limit.*/memory_limit = -1/" \
+        -e "s/^max_execution_time.*/max_execution_time = 300/" \
+        -e "s/^post_max_size.*/post_max_size = 512M/" \
+        -e "s/^upload_max_filesize.*/upload_max_filesize = 512M/" \
+        /etc/php7/php.ini && \
+
+    echo "error_log = \"/var/log/php/error.log\"" | tee -a /etc/php7/php.ini && \
 
     # Configure php log dir
+    rm -rf /var/log/php7 && \
+    mkdir /var/log/php && \
     touch /var/log/php/error.log && \
     touch /var/log/php/fpm-error.log && \
     touch /var/log/php/fpm-slow.log && \
@@ -110,14 +107,17 @@ RUN export PHP_ACTIONS_VER="master" && \
     apk add --update build-base autoconf libtool pcre-dev && \
     wget -qO- https://s3.amazonaws.com/wodby-releases/uploadprogress/v${UPLOADPROGRESS_VER}/php7-uploadprogress.tar.gz | tar xz -C /tmp/ && \
     cd /tmp/uploadprogress-${UPLOADPROGRESS_VER} && \
-    phpize && ./configure && make && make install && \
-    echo 'extension=uploadprogress.so' > /etc/php/conf.d/uploadprogress.ini && \
+    phpize7 && \
+    ./configure --with-php-config=/usr/bin/php-config7 && \
+    make && \
+    make install && \
+    echo 'extension=uploadprogress.so' > /etc/php7/conf.d/uploadprogress.ini && \
 
     # Purge dev APK packages
     apk del --purge *-dev build-base autoconf libtool && \
 
     # Cleanup after phpizing
-    cd / && rm -rf /usr/include/php /usr/lib/php/build /usr/lib/php/20090626/*.a && \
+    rm -rf /usr/include/php7 /usr/lib/php7/build /usr/lib/php7/modules/*.a && \
 
     # Remove redis binaries and config
     rm -f \
@@ -135,7 +135,7 @@ RUN export PHP_ACTIONS_VER="master" && \
     git config --global push.default current && \
 
     # Install composer
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    curl -sS https://getcomposer.org/installer | php7 -- --install-dir=/usr/local/bin --filename=composer && \
 
     # Install drush
     git clone https://github.com/drush-ops/drush.git /usr/local/src/drush && \
