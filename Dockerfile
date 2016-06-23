@@ -120,7 +120,14 @@ RUN export PHP_ACTIONS_VER="master" && \
     cd / && rm -rf /usr/include/php /usr/lib/php/build /usr/lib/php/20090626/*.a && \
 
     # Remove redis binaries and config
-    rm -f /usr/bin/redis-* /etc/redis.conf && \
+    rm -f \
+        /usr/bin/redis-benchmark \
+        /usr/bin/redis-check-aof \
+        /usr/bin/redis-check-dump \
+        /usr/bin/redis-sentinel \
+        /usr/bin/redis-server \
+        /etc/redis.conf \
+        && \
 
     # Define Git global config
     git config --global user.name "Administrator" && \
