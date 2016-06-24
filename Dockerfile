@@ -82,6 +82,7 @@ RUN export PHP_ACTIONS_VER="master" && \
     # Create symlinks PHP -> PHP7
     ln -sf /etc/php7 /etc/php && \
     ln -sf /usr/bin/php7 /usr/bin/php && \
+    ln -sf /usr/bin/php7-fpm /usr/bin/php-fpm && \
 
     # Configure php.ini
     sed -i \
