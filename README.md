@@ -1,7 +1,30 @@
 # wsn-alpine-caddy
 
-Caddy Web Server built on Alpine Linux with lot of essentials included:
+* Caddy on Alpine Linux with PHP 7 & Lots More
 
-Node
-WP-Cli
-Php 7
+Includes:
+
+php 7 & PHP essential extensions
+composer
+drush
+wp-cli
+git
+nano
+grep
+sed
+curl
+wget
+tar
+gzip
+pcre
+perl
+openssh
+patch
+patchutils
+diffutils
+postfix
+nodejs
+gcc
+bash
+dpkg
+
