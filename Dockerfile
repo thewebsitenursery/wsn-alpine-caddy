@@ -1,4 +1,4 @@
-FROM thewebsitenursery/wsn-alpine-caddy
+FROM wodby/nginx-alpine:v1.1.0
 MAINTAINER thewebsitesitenursery <hello@thewebsitenursery.com>
 
 RUN export PHP_ACTIONS_VER="master" && \
