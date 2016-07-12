@@ -1,5 +1,5 @@
-FROM wodby/nginx-alpine:v1.1.0
-MAINTAINER Wodby <hello@wodby.com>
+FROM thewebsitenursery/wsn-alpine-caddy
+MAINTAINER thewebsitesitenursery <hello@thewebsitenursery.com>
 
 RUN export PHP_ACTIONS_VER="master" && \
     export UPLOADPROGRESS_VER="0.1.0" && \
@@ -26,6 +26,11 @@ RUN export PHP_ACTIONS_VER="master" && \
         patchutils \
         diffutils \
         postfix \
+        nodejs \
+        gcc \
+        bash \
+        dpkg \
+
         && \
 
     # Add PHP actions
@@ -125,8 +130,8 @@ RUN export PHP_ACTIONS_VER="master" && \
     rm -f /etc/redis.conf && \
 
     # Define Git global config
-    git config --global user.name "Administrator" && \
-    git config --global user.email "admin@wodby.com" && \
+    git config --global user.name "thewebsitenursery" && \
+    git config --global user.email "hello@thewebsitenursery" && \
     git config --global push.default current && \
 
     # Install composer
@@ -141,15 +146,6 @@ RUN export PHP_ACTIONS_VER="master" && \
     # Install wp-cli
     composer create-project wp-cli/wp-cli /usr/local/src/wp-cli --no-dev && \
     ln -sf /usr/local/src/wp-cli/bin/wp /usr/bin/wp && \
-
-    # Install Walter tool
-    wget -qO- https://s3.amazonaws.com/wodby-releases/walter-cd/v${WALTER_VER}/walter.tar.gz | tar xz -C /tmp/ && \
-    mkdir -p /opt/wodby/bin && \
-    cp /tmp/walter_linux_amd64/walter /opt/wodby/bin && \
-
-    # Install go-aws-s3
-    wget -qO- https://s3.amazonaws.com/wodby-releases/go-aws-s3/${GO_AWS_S3_VER}/go-aws-s3.tar.gz | tar xz -C /tmp/ && \
-    cp /tmp/go-aws-s3 /opt/wodby/bin && \
 
     # Fix permissions
     chmod 755 /root && \
