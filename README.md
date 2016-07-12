@@ -4,7 +4,7 @@
 
 <h2> Includes: </h2>
 
-<p>php 7 & PHP essential extensions </p>
+<p>PHP 7 & PHP essential extensions </p>
 <p>composer </p>
 <p>drush </p>
 <p>wp-cli </p>
